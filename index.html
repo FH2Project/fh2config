@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Expert Sleepers FH-2</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <heading><span id="z">z</span>Expert Sleepers <span class="midi"></span><small>FH-2 Configurator</small></head>
+        <script>
+            mcv_table = {
+                rows: [
+                    [
+                        { h: "" },
+                        { h: "Enable" }, { h: "MIDI\nChannel" }, { h: "Note range" },
+                        { h: "Type" }, { h: "Base\nOutput" }, { h: "Base\nGate" },
+                        { h: "CV" }, { h: "Gate" }, { h: "Velocity\nGate" },
+                        { h: "Velocity" }, { h: "Release\nVelocity" }, { h: "Trigger" },
+                        { h: "Envelope" }, { h: "Aftertouch" }, { h: "Random" },
+                        { h: "Y" }, { h: "Gate" }, { h: "Aftertouch" },
+                        { h: "Bend" }, { h: "Gated\nAftertouch" }, { h: "Sustain" },
+                        { h: "Voice\nallocation" }, { h: "Prevent\nstealing" }, { h: "Voices" },
+                        { h: "Stride" }, { h: "Last\nchannel" }, { h: "Bend\nrange" },
+                        { h: "Mono\nretrigger" }, { h: "Interrupt\ngate" }, { h: "Env\nzero" }
+                    ], [
+                        { h: "", c: 7 }, { h: "Per voice outputs", c: 10 }, { h: "Paraphonic outputs", c: 3 },
+                        { h: "", c: 7 }, { h: "Up" }, { h: "Down" }, { h: "", c: 2 }
+                    ], [
+                        { h: "", c: 7 }, { h: "", c: 9 }, { h: "CC" }, { h: "", c: 3 }, { h: "", c: 11 },
+                    ]
+                ]
+            };
+            function addTable(table_def) {
+                let table = document.createElement("table");
+                table_def.rows.forEach(function (row) {
+                    let tr = document.createElement("tr");
+                    tr.classList.add("mcv");
+                    row.forEach(function (cell) {
+                        let th = document.createElement(cell.h ? "th" : "td");
+                        th.innerText = cell.h || "";
+                        if (cell.c > 1)
+                            th.setAttribute("colspan", cell.c);
+                        tr.appendChild(th);
+                    });
+                    table.appendChild(tr);
+                });
+                document.body.appendChild(table);
+            }
+    //addTable(mcv_table);
+        </script>
+</body>
+
+</html>
