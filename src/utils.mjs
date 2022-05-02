@@ -1,3 +1,7 @@
+/**
+ * Add a parameter table to document based on JSON definition
+ * @param {JSON} table_def 
+ */
 export function addTable(table_def) {
     let table = document.createElement("table");
     table_def.hrows.forEach(function (row) {
@@ -21,6 +25,12 @@ export function addTable(table_def) {
     }
     document.body.appendChild(table);
 }
+/**
+ * Generate html markup for select>option*n
+ * @param {Number} n    total numer of options; {String} n comma delimited list of option names
+ * @param {Number} ofs  offset to add to each zero based n
+ * @returns String markup
+ */
 export function ops(n,ofs){
     // returns a select element with options 1-n
     ofs = ofs||0;
@@ -31,6 +41,11 @@ export function ops(n,ofs){
         o = Array.from(Array(n),(u,i)=>`<option value='${i+ofs}'>${i+ofs}</option>`).join("");
     return `<select>${o}</select>`;
 }
+/**
+ * Generate html markup for select>option*n modulo 8 (ie Base output)
+ * @param {Number} n total numer of options
+ * @returns String markup
+ */
 export function opsm(n){
     let o = Array.from(Array(n),(u,i)=>`${i>>3}/${(i%8)+1}`);
     o = o.map((u,i)=>`<option value='${i}'>${u.replace("0/","")}</option>`).join("");

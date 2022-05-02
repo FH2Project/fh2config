@@ -39,7 +39,13 @@ function onMIDISuccess(access){
     console.log(Access);
     console.log(Options);
 }
-
+/**
+ * Initialise Browser MIDI
+ * @param {Object} options =>
+ *      .EventProcessor (callback on midi in activity, default just console.logs data
+ *      .error_element (a dom element to attach error class/message to)
+ *      .device_name (Name of MIDI device that should be connected)
+ */
 export const init = (options) => {
     Options = options||{};
     // check if browser supports midi & setup
@@ -47,6 +53,5 @@ export const init = (options) => {
         MIDIError("This browser doesn't support MIDI");
         return;
     }
-    navigator.requestMIDIAccess({ sysex: true }).then(onMIDISuccess, u => console.log("midi failed"));
-    return true;
+    navigator.requestMIDIAccess({ sysex: true }).then(onMIDISuccess, u => MIDIError("Request midi access failed"));
 }
