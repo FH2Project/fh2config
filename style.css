@@ -1,31 +1,53 @@
 :root {
-    font-family: sans-serif;
-    background-color: blanchedalmond;
-    font-size: 12px;
+    font-family: "Segoe UI", sans-serif;
+    font-size: 13px;
+    --background-color: #f5ffdd;
+    --primary-color: #000000E0;
+    --secondary-color: orange;
+    background-color: var(--background-color);
 }
 
 heading {
-    color: blanchedalmond;
+    color: var(--secondary-color);
     font-weight: 700;
     font-size: 3em;
+    display: flex;
+    justify-content: space-around;
+    align-items: flex-end;
+    position: relative;
 }
 
 #z {
     color: inherit;
-    margin: 0 1em;
+    margin: 0 0.75em 0 0;
     vertical-align: super;
-    text-shadow: -0.35em 0.325em 0, 0.35em -0.325em 0;
+    font-size: 2.5rem;
+    text-shadow: -0.26em 0.325em 0, 0.26em -0.325em 0;
+}
+
+table {
+    margin: 0.5em auto;
 }
 
 th {
     white-space: pre;
     vertical-align: bottom;
     background-color: rgba(0, 0, 0, 0.25);
+    line-height: 1.1;
 }
 
 .mcv>th {
     padding: 4px;
     min-width: 3ch;
+}
+
+.b>td:first-child {
+    background-color: rgba(0, 0, 0, 0.25);
+    padding: 0 3px;
+    font-weight: bold;
+}
+.b:nth-child(odd){
+    background-color: rgba(0, 0, 0, 0.125);
 }
 
 th:empty,
@@ -41,13 +63,18 @@ td:empty {
     vertical-align: middle;
 }
 
-heading>small {
-    float: right;
+td {
+    padding: 4px 0;
+    text-align: center;
+}
+
+td>input {
+    max-width: 48px;
 }
 
 .midi {
     display: inline-block;
-    color: orange;
+    color: var(--secondary-color);
     width: 32px;
     height: 32px;
     outline: 3px solid;
@@ -55,17 +82,50 @@ heading>small {
     position: relative;
 }
 
+.midi.error {
+    animation: shake 0.82s cubic-bezier(.36, .07, .19, .97) both;
+}
+
+.midi.error[data-message]::after {
+    text-decoration: underline wavy var(--secondary-color);
+}
+.midi[data-message]::after {
+    content: attr(data-message);
+    display: block;
+    font-size: 16px;
+    margin-top: -28px;
+    margin-left: 50%;
+    width: max-content;
+    color: black;
+    transform: translateX(-50%);
+}
+
 .midi::before {
     content: "";
-    width: 6px;
-    height: 6px;
+    width: 5px;
+    height: 5px;
     border-radius: 50%;
     background-color: currentColor;
-    left: 13.35px;
+    left: 13.85px;
     top: 2px;
     position: absolute;
     box-shadow: -7.5px 3.5px 0,
         -11.5px 11px 0,
         7.5px 3.5px 0,
         10px 11px 0;
+}
+
+@keyframes shake {
+    10%,90% {
+        transform: translate3d(-1px, 0, 0);
+    }
+    20%,80% {
+        transform: translate3d(2px, 0, 0);
+    }
+    30%,50%,70% {
+        transform: translate3d(-4px, 0, 0);
+    }
+    40%,60% {
+        transform: translate3d(4px, 0, 0);
+    }
 }

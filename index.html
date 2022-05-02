@@ -10,10 +10,17 @@
 </head>
 
 <body>
-    <heading><span id="z">z</span>Expert Sleepers <span class="midi"></span><small>FH-2 Configurator</small></head>
-        <script>
-            mcv_table = {
-                rows: [
+    <heading>
+        <span><span id="z">z</span>Expert Sleepers</span>
+        <span class="midi"></span><small>FH-2 Configurator</small>
+    </heading>
+        <script type="module">
+            import {addTable, ops, opsm} from './src/utils.mjs';
+            import * as MIDI from './src/midi.mjs';
+            /* inline json for dev, prod can fetch from server based on reported firmware version
+            */
+            const mcv_table = {
+                hrows: [
                     [
                         { h: "" },
                         { h: "Enable" }, { h: "MIDI\nChannel" }, { h: "Note range" },
@@ -24,33 +31,31 @@
                         { h: "Y" }, { h: "Gate" }, { h: "Aftertouch" },
                         { h: "Bend" }, { h: "Gated\nAftertouch" }, { h: "Sustain" },
                         { h: "Voice\nallocation" }, { h: "Prevent\nstealing" }, { h: "Voices" },
-                        { h: "Stride" }, { h: "Last\nchannel" }, { h: "Bend\nrange" },
+                        { h: "Stride" }, { h: "Last\nchannel" }, { h: "Bend\nrange", c:2 },
                         { h: "Mono\nretrigger" }, { h: "Interrupt\ngate" }, { h: "Env\nzero" }
                     ], [
                         { h: "", c: 7 }, { h: "Per voice outputs", c: 10 }, { h: "Paraphonic outputs", c: 3 },
-                        { h: "", c: 7 }, { h: "Up" }, { h: "Down" }, { h: "", c: 2 }
+                        { h: "", c: 7 }, { h: "Up" }, { h: "Down" }, { h: "", c: 3 }
                     ], [
-                        { h: "", c: 7 }, { h: "", c: 9 }, { h: "CC" }, { h: "", c: 3 }, { h: "", c: 11 },
+                        { h: "", c: 7 }, { h: "", c: 9 }, { h: "CC" }, { h: "", c: 3 }, { h: "", c: 12 },
                     ]
-                ]
+                ],
+                drowCount: 16,
+                drowTemplate: i => `<td>${i+1}</td><td><input type="checkbox"/></td><td>${ops(16,1)}</td><td>${ops(128)}${ops(128)}</td>
+                    <td>${ops("Mono,Poly,MPE")}</td><td>${opsm(64, 1)}</td><td>${opsm(64, 1)}</td>
+                    <td><input type="checkbox"/></td><td><input type="checkbox"/></td><td><input type="checkbox"/></td><td><input type="checkbox"/></td>
+                    <td><input type="checkbox"/></td><td><input type="checkbox"/></td><td><input type="checkbox"/></td><td><input type="checkbox"/></td>
+                    <td><input type="checkbox"/></td><td></td><td><input type="checkbox"/></td><td><input type="checkbox"/></td>
+                    <td>${ops("--,Single,Double")}</td><td><input type="checkbox"/></td><td>${ops("Off,Sustain,Sostenuto,Both")}</td>
+                    <td></td><td></td><td></td><td></td><td></td><td>${ops(65)}</td><td>${ops(65)}</td><td><input type="checkbox"/></td>
+                    <td><input type="checkbox"/></td><td><input type="checkbox"/></td>`
             };
-            function addTable(table_def) {
-                let table = document.createElement("table");
-                table_def.rows.forEach(function (row) {
-                    let tr = document.createElement("tr");
-                    tr.classList.add("mcv");
-                    row.forEach(function (cell) {
-                        let th = document.createElement(cell.h ? "th" : "td");
-                        th.innerText = cell.h || "";
-                        if (cell.c > 1)
-                            th.setAttribute("colspan", cell.c);
-                        tr.appendChild(th);
-                    });
-                    table.appendChild(tr);
-                });
-                document.body.appendChild(table);
-            }
-    //addTable(mcv_table);
+            addTable(mcv_table);
+            const MIDIoptions = {
+                error_element: document.querySelector("heading>.midi"),
+                device_name: "Circuit Tracks"
+            };
+            MIDI.init(MIDIoptions);
         </script>
 </body>
 
