@@ -46,19 +46,25 @@ export function ops(n,ofs){
  * @param {Number} n total numer of options
  * @returns String markup
  */
-export function opsm(n){
+export function opsm(n,ix,name){
     let o = Array.from(Array(n),(u,i)=>`${i>>3}/${(i%8)+1}`);
     o = o.map((u,i)=>`<option value='${i}'>${u.replace("0/","")}</option>`).join("");
-    return `<select>${o}</select>`;
+    return `<select name="${name}${ix}">${o}</select>`;
+}
+export function cb(i,name){
+    return `<input type="checkbox" name="${name}${i}" aria-label="${name}${i}"/>`
+}
+function setSelected(e){
+    let lasttab = document.querySelector(".tab_bar>span.selected");
+    if (lasttab)
+        lasttab.classList.remove("selected");
+    e.target.classList.add("selected");
 }
 export function tabs(){
     let tb = Array.from(document.querySelectorAll(".tab_bar>span"));
     tb.forEach(function(u){
-        u.addEventListener("click", e => {
-            let lasttab = document.querySelector(".tab_bar>span.selected");
-            if (lasttab)
-                lasttab.classList.remove("selected");
-            e.target.classList.add("selected");
-        });
+        u.setAttribute("tabindex","0");
+        u.addEventListener("click", setSelected);
+        u.addEventListener("focus", setSelected);
     });
 }
