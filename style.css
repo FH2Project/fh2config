@@ -129,3 +129,61 @@ td>input {
         transform: translate3d(4px, 0, 0);
     }
 }
+
+/* tabbed UI */
+.tab_bar>span.selected {
+    background-color: var(--primary-color);
+    color: white;
+    transform: translateY(0);
+}
+
+.tab_bar>span.selected::before,
+.tab_bar>span.selected::after {
+    content: "";
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    position: absolute;
+    right: -8px;
+    bottom: 0;
+    background: radial-gradient(circle at top right, transparent 68%, var(--primary-color) 76%);
+}
+
+.tab_bar>span.selected::before {
+    left: -8px;
+    bottom: 0;
+    right: initial;
+    transform: scaleX(-1);
+}
+
+.tab_bar {
+    display: flex;
+    position: relative;
+    margin-top: 1em;
+}
+
+.tab_bar::after {
+    content: "";
+    position: absolute;
+    width: calc(100% + 3px);
+    height: 3px;
+    left: -6px;
+    bottom: -3px;
+    background: var(--primary-color);
+}
+
+.tab_bar>span {
+    padding: 4px 14px;
+    max-width: 130px;
+    margin-left: 3px;
+    background-color: #0001;
+    font-size: 1.1rem;
+    font-weight: normal;
+    border-radius: 6px 6px 0 0;
+    outline: none;
+    flex: 1 1 0;
+    overflow: visible;
+    position: relative;
+    transform: translateY(2px);
+    transition: transform 100ms ease;
+}
