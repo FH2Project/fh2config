@@ -36,8 +36,9 @@ function onMIDISuccess(access){
     else
         Access.inputs.forEach(function (entry){entry.onmidimessage = defaultEventProcessor});
     Access.outputs.forEach(o => console.log(o));
-    console.log(Access);
-    console.log(Options);
+    if (Options.error_element&&!Options.error_element.dataset.message) {
+        Options.error_element.dataset.message = `Connected to ${Options.device_name}`;
+    }
 }
 /**
  * Initialise Browser MIDI

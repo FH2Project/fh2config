@@ -51,3 +51,14 @@ export function opsm(n){
     o = o.map((u,i)=>`<option value='${i}'>${u.replace("0/","")}</option>`).join("");
     return `<select>${o}</select>`;
 }
+export function tabs(){
+    let tb = Array.from(document.querySelectorAll(".tab_bar>span"));
+    tb.forEach(function(u){
+        u.addEventListener("click", e => {
+            let lasttab = document.querySelector(".tab_bar>span.selected");
+            if (lasttab)
+                lasttab.classList.remove("selected");
+            e.target.classList.add("selected");
+        });
+    });
+}

@@ -96,7 +96,7 @@ td>input {
     margin-top: -28px;
     margin-left: 50%;
     width: max-content;
-    color: black;
+    color: gray;
     transform: translateX(-50%);
 }
 

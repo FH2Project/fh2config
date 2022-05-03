@@ -17,14 +17,15 @@
     <div class="tab_bar">
         <span>Globals</span><span class="selected">MIDI CV</span><span>Envelopes</span>
         <span>Arpeggiators</span><span>Clocks</span><span>Triggers</span><span>Euclidean</span>
-        <span>Sequencers</span><span>Outputs</span><span>Gamepad</span><span>HID Keyboard</span><span>CV/MIDI</span>
+        <span>Sequencers</span><span>Outputs</span><span>Gamepad</span><span>HID</span><span>CV MIDI</span>
     </div>
         <script type="module">
-            import {addTable, ops, opsm} from './src/utils.mjs';
+            import {addTable, ops, opsm, tabs} from './src/utils.mjs';
             import * as MIDI from './src/midi.mjs';
             /* inline json for dev, prod can fetch from server based on reported firmware version
             */
            const urlParam = new URLSearchParams(document.location.search);
+           tabs();
 
             const mcv_table = {
                 hrows: [
@@ -61,7 +62,7 @@
             const midiDeviceName = urlParam.get("device") || "FH-2";
             const MIDIoptions = {
                 error_element: document.querySelector("heading>.midi"),
-                device_name: midiDeviceName
+                device_name: decodeURI(midiDeviceName)
             };
             MIDI.init(MIDIoptions);
         </script>
