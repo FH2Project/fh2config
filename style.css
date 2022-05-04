@@ -40,10 +40,10 @@ th {
     vertical-align: bottom;
     background-color: rgba(0, 0, 0, 0.25);
     line-height: 1.1;
+    padding: 4px;
 }
 
 .mcv>th {
-    padding: 4px;
     min-width: 3ch;
 }
 
@@ -137,6 +137,10 @@ td>input {
     }
 }
 
+.hide {
+    display: none;
+}
+
 /* tabbed UI */
 .tab_bar>span.selected {
     background-color: var(--primary-color);
@@ -166,7 +170,8 @@ td>input {
 .tab_bar {
     display: flex;
     position: relative;
-    margin-top: 1em;
+    padding-top: 1em;
+    background: linear-gradient(black, #555, #aaa);
 }
 
 .tab_bar::after {
@@ -183,12 +188,13 @@ td>input {
     padding: 4px 14px;
     max-width: 130px;
     margin-left: 3px;
-    background-color: #0001;
+    background-color: var(--secondary-color);
+    color: white;
     font-size: 1.1rem;
     font-weight: normal;
     border-radius: 6px 6px 0 0;
     outline: none;
-    flex: 1 1 0;
+    /* flex: 1 1 0; */
     overflow: visible;
     position: relative;
     transform: translateY(2px);
