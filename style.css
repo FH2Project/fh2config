@@ -1,0 +1,196 @@
+:root {
+    font-family: "Segoe UI", sans-serif;
+    font-size: 13px;
+    --background-color: #fafaff;
+    --primary-color: black;
+    --secondary-color: orange;
+    background-color: var(--background-color);
+}
+
+body {
+    margin:0;
+}
+
+heading {
+    color: var(--secondary-color);
+    background-color: black;
+    border-bottom: 8px solid black;
+    font-weight: 700;
+    font-size: 3em;
+    display: flex;
+    justify-content: space-around;
+    align-items: flex-end;
+    position: relative;
+}
+
+#z {
+    color: inherit;
+    margin: 0 0.75em 0 0;
+    vertical-align: super;
+    font-size: 2.5rem;
+    text-shadow: -0.26em 0.325em 0, 0.26em -0.325em 0;
+}
+
+table {
+    margin: 0.5em auto;
+}
+
+th {
+    white-space: pre;
+    vertical-align: bottom;
+    background-color: rgba(0, 0, 0, 0.25);
+    line-height: 1.1;
+}
+
+.mcv>th {
+    padding: 4px;
+    min-width: 3ch;
+}
+
+.b>td:first-child {
+    background-color: rgba(0, 0, 0, 0.25);
+    padding: 0 3px;
+    font-weight: bold;
+}
+.b:nth-child(odd){
+    background-color: rgba(0, 0, 0, 0.125);
+}
+
+th:empty,
+td:empty {
+    background-color: rgba(0, 0, 0, 0.125);
+}
+
+.mcv>th:nth-child(n+8):nth-child(-n+21),
+.mcv>th:nth-child(n+29) {
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+    text-align: left;
+    vertical-align: middle;
+}
+
+td {
+    padding: 4px 0;
+    text-align: center;
+}
+
+td>input {
+    max-width: 48px;
+}
+
+.midi {
+    display: inline-block;
+    color: var(--secondary-color);
+    width: 32px;
+    height: 32px;
+    outline: 3px solid;
+    border-radius: 50%;
+    position: relative;
+}
+
+.midi.error {
+    animation: shake 0.82s cubic-bezier(.36, .07, .19, .97) both;
+}
+
+.midi.error[data-message]::after {
+    text-decoration: underline wavy var(--secondary-color);
+}
+.midi[data-message]::after {
+    content: attr(data-message);
+    display: block;
+    font-size: 16px;
+    margin-top: -28px;
+    margin-left: 50%;
+    width: max-content;
+    color: var(--background-color);
+    font-weight: 400;
+    transform: translateX(-50%);
+}
+
+.midi::before {
+    content: "";
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background-color: currentColor;
+    left: 13.85px;
+    top: 2px;
+    position: absolute;
+    box-shadow: -7.5px 3.5px 0,
+        -11.5px 11px 0,
+        7.5px 3.5px 0,
+        10px 11px 0;
+}
+
+@keyframes shake {
+    10%,90% {
+        transform: translate3d(-1px, 0, 0);
+    }
+    20%,80% {
+        transform: translate3d(2px, 0, 0);
+    }
+    30%,50%,70% {
+        transform: translate3d(-4px, 0, 0);
+    }
+    40%,60% {
+        transform: translate3d(4px, 0, 0);
+    }
+}
+
+/* tabbed UI */
+.tab_bar>span.selected {
+    background-color: var(--primary-color);
+    color: white;
+    transform: translateY(0);
+}
+
+.tab_bar>span.selected::before,
+.tab_bar>span.selected::after {
+    content: "";
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    position: absolute;
+    right: -8px;
+    bottom: 0;
+    background: radial-gradient(circle at top right, transparent 68%, var(--primary-color) 76%);
+}
+
+.tab_bar>span.selected::before {
+    left: -8px;
+    bottom: 0;
+    right: initial;
+    transform: scaleX(-1);
+}
+
+.tab_bar {
+    display: flex;
+    position: relative;
+    margin-top: 1em;
+}
+
+.tab_bar::after {
+    content: "";
+    position: absolute;
+    width: calc(100% + 3px);
+    height: 3px;
+    left: -6px;
+    bottom: -3px;
+    background: var(--primary-color);
+}
+
+.tab_bar>span {
+    padding: 4px 14px;
+    max-width: 130px;
+    margin-left: 3px;
+    background-color: #0001;
+    font-size: 1.1rem;
+    font-weight: normal;
+    border-radius: 6px 6px 0 0;
+    outline: none;
+    flex: 1 1 0;
+    overflow: visible;
+    position: relative;
+    transform: translateY(2px);
+    transition: transform 100ms ease;
+}

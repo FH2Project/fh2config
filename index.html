@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="Configuration utility for Expert Sleepers FH-2">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Expert Sleepers FH-2</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <heading>
+        <span><span id="z">z</span>Expert Sleepers</span>
+        <span class="midi"></span><small>FH-2 Configurator</small>
+    </heading>
+    <div class="tab_bar">
+        <span>Globals</span><span class="selected">MIDI CV</span><span>Envelopes</span>
+        <span>Arpeggiators</span><span>Clocks</span><span>Triggers</span><span>Euclidean</span>
+        <span>Sequencers</span><span>Outputs</span><span>Gamepad</span><span>HID</span><span>CV MIDI</span>
+    </div>
+        <script type="module">
+            import {addTable, ops, opsm, cb, tabs} from './src/utils.mjs';
+            import * as MIDI from './src/midi.mjs';
+            /* inline json for dev, prod can fetch from server based on reported firmware version
+            */
+           const urlParam = new URLSearchParams(document.location.search);
+           tabs();
+
+            const mcv_table = {
+                hrows: [
+                    [
+                        { h: "" },
+                        { h: "Enable" }, { h: "MIDI\nChannel" }, { h: "Note range" },
+                        { h: "Type" }, { h: "Base\nOutput" }, { h: "Base\nGate" },
+                        { h: "CV" }, { h: "Gate" }, { h: "Velocity\nGate" },
+                        { h: "Velocity" }, { h: "Release\nVelocity" }, { h: "Trigger" },
+                        { h: "Envelope" }, { h: "Aftertouch" }, { h: "Random" },
+                        { h: "Y" }, { h: "Gate" }, { h: "Aftertouch" },
+                        { h: "Bend" }, { h: "Gated\nAftertouch" }, { h: "Sustain" },
+                        { h: "Voice\nallocation" }, { h: "Prevent\nstealing" }, { h: "Voices" },
+                        { h: "Stride" }, { h: "Last\nchannel" }, { h: "Bend\nrange", c:2 },
+                        { h: "Mono\nretrigger" }, { h: "Interrupt\ngate" }, { h: "Env\nzero" }
+                    ], [
+                        { h: "", c: 7 }, { h: "Per voice outputs", c: 10 }, { h: "Paraphonic outputs", c: 3 },
+                        { h: "", c: 7 }, { h: "Up" }, { h: "Down" }, { h: "", c: 3 }
+                    ], [
+                        { h: "", c: 7 }, { h: "", c: 9 }, { h: "CC" }, { h: "", c: 3 }, { h: "", c: 12 },
+                    ]
+                ],
+                drowCount: 16,
+                drowTemplate: i => `<td>${i+1}</td><td>${cb(i,"EN")}</td><td>${ops(16,1)}</td><td>${ops(128)}${ops(128)}</td>
+                    <td>${ops("Mono,Poly,MPE")}</td><td>${opsm(64,i,"BO")}</td><td>${opsm(64,i,"BG")}</td>
+                    <td>${cb(i,"CV")}</td><td>${cb(i,"G")}</td><td>${cb(i,"VG")}</td><td>${cb(i,"V")}</td>
+                    <td>${cb(i,"RV")}</td><td>${cb(i,"T")}</td><td>${cb(i,"Env")}</td><td>${cb(i,"AT")}</td>
+                    <td>${cb(i,"Rnd")}</td><td></td><td>${cb(i,"PG")}</td><td>${cb(i,"PA")}</td>
+                    <td>${ops("--,Single,Double")}</td><td>${cb(i,"GA")}</td><td>${ops("Off,Sustain,Sostenuto,Both")}</td>
+                    <td></td><td></td><td></td><td></td><td></td><td>${ops(65)}</td><td>${ops(65)}</td><td>${cb(i,"MR")}</td>
+                    <td>${cb(i,"IG")}</td><td>${cb(i,"EZ")}</td>`
+            };
+            addTable(mcv_table);
+            const midiDeviceName = urlParam.get("device") || "FH-2";
+            const MIDIoptions = {
+                error_element: document.querySelector("heading>.midi"),
+                device_name: decodeURI(midiDeviceName)
+            };
+            MIDI.init(MIDIoptions);
+        </script>
+</body>
+
+</html>
