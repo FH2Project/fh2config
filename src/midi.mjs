@@ -1,4 +1,4 @@
-/* web MIDI support */
+/* web MIDI support: © 2022 - Ian Sayer */
 
 let Access = undefined;
 let Options = undefined;
