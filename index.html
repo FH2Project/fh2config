@@ -16,19 +16,58 @@
         <span class="midi"></span><small>FH-2 Configurator</small>
     </heading>
     <div class="tab_bar">
-        <span>Globals</span><span class="selected">MIDI CV</span><span>Envelopes</span>
+        <span data-tbl="global_table">Globals</span><span data-tbl="mcv_table" class="selected">MIDI CV</span><span>Envelopes</span>
         <span>Arpeggiators</span><span>Clocks</span><span>Triggers</span><span>Euclidean</span>
         <span>Sequencers</span><span>Outputs</span><span>Gamepad</span><span>HID</span><span>CV MIDI</span>
     </div>
         <script type="module">
-            import {addTable, ops, opsm, cb, tabs} from './src/utils.mjs';
+            import {addTable, ops, opsm, cb, tabs, tblDefs, setTblDef} from './src/utils.mjs';
             import * as MIDI from './src/midi.mjs';
-            /* inline json for dev, prod can fetch from server based on reported firmware version
+            /*  inline json for dev, prod can fetch from server based on reported firmware version
+                © 2022 - Ian Sayer
             */
            const urlParam = new URLSearchParams(document.location.search);
            tabs();
 
+            const global_table = {
+                rowclass: "Global",
+                hrows: [[
+                    { h: "Legato\nvelocity", c:-2 },
+                    { h: "Global\ntranspose", c:-2 },
+                    { h: "Trigger\nlength", c:-2 },
+                    { h: "Ext Clock\nMultiplier", c:-2 },
+                    { h: "Ext Clock\nRun Control", c:-2 },
+                    { h: "Euclidean\nAccent", c:-2 },
+                    { h: "Preset Program Change" },
+                    { h: "Soft\ntakeover", c:-2 },
+                    { h: "Tap Tempo", c:3 },
+                    { h: "Start / Stop", c:3 },
+                    { h: "Internal tempo", c:3 },
+                    { h: "Display mode / item", c: 2 }
+                ],[
+                    { h: "Channel" },
+                    { h: "Type" },
+                    { h: "Channel" },
+                    { h: "Note or CC" },
+                    { h: "Type" },
+                    { h: "Channel" },
+                    { h: "Note or CC" },
+                    { h: "Channel / CC" },
+                    { h: "Min" },
+                    { h: "Max" },
+                    { h: "Channel / CC" },
+                    { h: "Channel / CC" }
+                ]],
+                drowCount: 1,
+                drowTemplate: i => `<td>${cb(i,"LV")}</td>${ops(97,-48)}<td>${ops(100, 1)}</td><td>${ops(96, 1)}</td>
+                <td>${ops("None,Run/Stop on Y")}</td><td>${ops(128, 1)}</td><td>${ops(17,"Off")}</td><td>${cb(i,"ST")}</td>
+                <td>${ops("None,Note,CC")}</td><td>${ops(16, 1)}</td><td>${ops(128)}</td>
+                <td>${ops("None,Note Toggle,CC Toggle,Note Gate,CC Gate,Y Toggle,Y Gate")}</td>
+                <td>${ops(16, 1)}</td><td>${ops(128)}</td><td>${ops(17,"--")}</td><td>${ops(128,1)}</td><td>${ops(128,128)}</td>
+                <td>${ops(17,"--")}</td><td>${ops(17,"--")}</td>`
+            }
             const mcv_table = {
+                rowclass: "mvc",
                 hrows: [
                     [
                         { h: "" },
@@ -51,7 +90,7 @@
                 ],
                 drowCount: 16,
                 drowTemplate: i => `<td>${i+1}</td><td>${cb(i,"EN")}</td><td>${ops(16,1)}</td><td>${ops(128)}${ops(128)}</td>
-                    <td>${ops("Mono,Poly,MPE")}</td><td>${opsm(64,i,"BO")}</td><td>${opsm(64,i,"BG")}</td>
+                    <td>${ops("Mono,Poly,MPE")}</td><td>${opsm(64,i,"BO")}</td><td>${opsm(64,i,"BG","--")}</td>
                     <td>${cb(i,"CV")}</td><td>${cb(i,"G")}</td><td>${cb(i,"VG")}</td><td>${cb(i,"V")}</td>
                     <td>${cb(i,"RV")}</td><td>${cb(i,"T")}</td><td>${cb(i,"Env")}</td><td>${cb(i,"AT")}</td>
                     <td>${cb(i,"Rnd")}</td><td></td><td>${cb(i,"PG")}</td><td>${cb(i,"PA")}</td>
@@ -59,7 +98,9 @@
                     <td></td><td></td><td></td><td></td><td></td><td>${ops(65)}</td><td>${ops(65)}</td><td>${cb(i,"MR")}</td>
                     <td>${cb(i,"IG")}</td><td>${cb(i,"EZ")}</td>`
             };
+            setTblDef({"global_table":global_table, "mcv_table":mcv_table});
             addTable(mcv_table);
+            // addTable(mcv_table);
             const midiDeviceName = urlParam.get("device") || "FH-2";
             const MIDIoptions = {
                 error_element: document.querySelector("heading>.midi"),
