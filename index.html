@@ -16,12 +16,13 @@
         <span class="midi"></span><small>FH-2 Configurator</small>
     </heading>
     <div class="tab_bar">
-        <span data-tbl="global_table">Globals</span><span data-tbl="mcv_table" class="selected">MIDI CV</span><span>Envelopes</span>
+        <span data-tbl="global_table">Globals</span><span data-tbl="mcv_table">MIDI CV</span><span class="selected">Envelopes</span>
         <span>Arpeggiators</span><span>Clocks</span><span>Triggers</span><span>Euclidean</span>
         <span>Sequencers</span><span>Outputs</span><span>Gamepad</span><span>HID</span><span>CV MIDI</span>
     </div>
         <script type="module">
             import {addTable, ops, opsm, cb, tabs, tblDefs, setTblDef} from './src/utils.mjs';
+            import {scopeInit} from './src/cvGen.mjs';
             import * as MIDI from './src/midi.mjs';
             /*  inline json for dev, prod can fetch from server based on reported firmware version
                 © 2022 - Ian Sayer
@@ -99,7 +100,8 @@
                     <td>${cb(i,"IG")}</td><td>${cb(i,"EZ")}</td>`
             };
             setTblDef({"global_table":global_table, "mcv_table":mcv_table});
-            addTable(mcv_table);
+            scopeInit();
+            //addTable(mcv_table);
             // addTable(mcv_table);
             const midiDeviceName = urlParam.get("device") || "FH-2";
             const MIDIoptions = {

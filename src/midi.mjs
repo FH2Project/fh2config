@@ -3,12 +3,18 @@
 let Access = undefined;
 let Options = undefined;
 
-function MIDIError(errorMessage){
-    console.log(errorMessage);
+/**
+ * updateMIDIConnectionStatus
+ * @param {string} message 
+ * @param {boolean} connected 
+ */
+function updateMIDIConnectionStatus(message, connected){
+    console.log(message);
     if (Options.error_element){
-        Options.error_element.classList.add("error");
-        Options.error_element.dataset.message = errorMessage;
+        Options.error_element.classList[connected?"remove":"add"]("error");
+        Options.error_element.dataset.message = message;
     }
+    // add code to sync DOM list of midi devices
 }
 
 function defaultEventProcessor(event){
@@ -21,14 +27,24 @@ function defaultEventProcessor(event){
     }
 }
 
+function onMIDIDeviceStatusChange(event){
+    if (Options?.device_name==event.port.name){
+        if (event.port.state=="connected")
+            updateMIDIConnectionStatus(`Connected to ${Options.device_name}`, true);
+        else
+            updateMIDIConnectionStatus(`${Options.device_name} Disconnected`, false);
+    }
+}
+
 function onMIDISuccess(access){
     Access = access;
+    Access.onstatechange = onMIDIDeviceStatusChange;
     if (Options.device_name) {
         let mo = Array.from(Access.outputs.entries(), u=>u[1]);
         let pd = mo.find(u=>u.name==Options.device_name);
         Access.primary_device = pd;
         if (!pd){
-            MIDIError(`Cannot find device > ${Options.device_name}`);
+            updateMIDIConnectionStatus(`Cannot find device > ${Options.device_name}`, false);
         }
     }
     if (Options.EventProcessor)
@@ -36,9 +52,7 @@ function onMIDISuccess(access){
     else
         Access.inputs.forEach(function (entry){entry.onmidimessage = defaultEventProcessor});
     Access.outputs.forEach(o => console.log(o));
-    if (Options.error_element&&!Options.error_element.dataset.message) {
-        Options.error_element.dataset.message = `Connected to ${Options.device_name}`;
-    }
+    updateMIDIConnectionStatus(`Connected to ${Options.device_name}`, true)
 }
 /**
  * Initialise Browser MIDI

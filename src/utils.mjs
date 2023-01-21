@@ -82,7 +82,7 @@ function setSelected(e){
         return;
     if (lasttab) {
         lasttab.classList.remove("selected");
-        let doml = document.querySelector("table:not(.hide)");
+        let doml = document.querySelector("table:not(.hide),canvas:not(.hide)");
         if (doml)
             doml.classList.add("hide");
     }
