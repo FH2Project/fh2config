@@ -3,6 +3,9 @@
 let Access = undefined;
 let Options = undefined;
 
+let lastPulseTime = 0;
+let deltaPulseTime = 0;
+
 /**
  * updateMIDIConnectionStatus
  * @param {string} message 
@@ -18,9 +21,20 @@ function updateMIDIConnectionStatus(message, connected){
 }
 
 function defaultEventProcessor(event){
-    let cmd = event.data[0] >> 4;
-    switch (cmd) {
-        case 0xf: // stop clock nagging
+    let cmd = event.data[0];
+    switch (cmd>>4) {
+        case 0xF: // clock event
+            if (Options.transport_element){
+                Options.pcnt++;
+                if (Options.pcnt>=Options.ppq){
+                    Options.pcnt = 0;
+                    if (lastPulseTime) {
+                        deltaPulseTime = event.timeStamp - lastPulseTime;
+                        Options.transport_element.dataset.tempo = Math.round(60/(deltaPulseTime/1000));
+                    }
+                    lastPulseTime = event.timeStamp;
+                    }
+                }
             break;
         case 9: // note on
             console.log(`${event.data[0].toString(16)} ${event.data[1]} ${event.data[2]}`);
@@ -29,30 +43,35 @@ function defaultEventProcessor(event){
 
 function onMIDIDeviceStatusChange(event){
     if (Options?.device_name==event.port.name){
-        if (event.port.state=="connected")
+        if (event.port.state=="connected") {
+            event.port.onmidimessage = Options.EventProcessor||defaultEventProcessor;
             updateMIDIConnectionStatus(`Connected to ${Options.device_name}`, true);
-        else
+        } else
             updateMIDIConnectionStatus(`${Options.device_name} Disconnected`, false);
     }
+}
+
+function setEventProcessor(access){
+    access.inputs.forEach(function (entry){entry.onmidimessage = Options.EventProcessor||defaultEventProcessor});
 }
 
 function onMIDISuccess(access){
     Access = access;
     Access.onstatechange = onMIDIDeviceStatusChange;
+    let primary_device = undefined;
     if (Options.device_name) {
         let mo = Array.from(Access.outputs.entries(), u=>u[1]);
-        let pd = mo.find(u=>u.name==Options.device_name);
-        Access.primary_device = pd;
-        if (!pd){
+        primary_device = mo.find(u=>u.name==Options.device_name);
+        if (primary_device){
+            Access.primary_device = primary_device;
+        } else {
             updateMIDIConnectionStatus(`Cannot find device > ${Options.device_name}`, false);
         }
     }
-    if (Options.EventProcessor)
-        Access.inputs.forEach(function (entry){entry.onmidimessage = Options.EventProcessor});
-    else
-        Access.inputs.forEach(function (entry){entry.onmidimessage = defaultEventProcessor});
+    setEventProcessor(access);
     Access.outputs.forEach(o => console.log(o));
-    updateMIDIConnectionStatus(`Connected to ${Options.device_name}`, true)
+    if (primary_device)
+        updateMIDIConnectionStatus(`Connected to ${Options.device_name}`, true)
 }
 /**
  * Initialise Browser MIDI

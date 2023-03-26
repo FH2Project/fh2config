@@ -17,66 +17,16 @@ heading {
     background-color: black;
     border-bottom: 8px solid black;
     font-weight: 700;
-    font-size: 3em;
+    font-size: 2.5em;
+    min-height: 2em;
     display: flex;
     justify-content: space-around;
     align-items: flex-end;
     position: relative;
 }
 
-#z {
-    color: inherit;
-    margin: 0 0.75em 0 0;
-    vertical-align: super;
-    font-size: 2.5rem;
-    text-shadow: -0.26em 0.325em 0, 0.26em -0.325em 0;
-}
-
-table {
-    margin: 0.5em auto;
-}
-
-th {
-    white-space: pre;
-    vertical-align: bottom;
-    background-color: rgba(0, 0, 0, 0.25);
-    line-height: 1.1;
-    padding: 4px;
-}
-
-.mcv>th {
-    min-width: 3ch;
-}
-
-.b>td:first-child {
-    background-color: rgba(0, 0, 0, 0.25);
-    padding: 0 3px;
-    font-weight: bold;
-}
-.b:nth-child(odd){
-    background-color: rgba(0, 0, 0, 0.125);
-}
-
-th:empty,
-td:empty {
-    background-color: rgba(0, 0, 0, 0.125);
-}
-
-.mcv>th:nth-child(n+8):nth-child(-n+21),
-.mcv>th:nth-child(n+29) {
-    writing-mode: vertical-rl;
-    transform: rotate(180deg);
-    text-align: left;
-    vertical-align: middle;
-}
-
-td {
-    padding: 4px 0;
-    text-align: center;
-}
-
-td>input {
-    max-width: 48px;
+#transport[data-tempo]::after {
+    content: " "attr(data-tempo)"BPM";
 }
 
 .midi {
@@ -100,7 +50,7 @@ td>input {
     content: attr(data-message);
     display: block;
     font-size: 16px;
-    margin-top: -28px;
+    margin-top: -24px;
     margin-left: 50%;
     width: max-content;
     color: var(--background-color);
@@ -126,15 +76,18 @@ td>input {
 @keyframes shake {
     10%,90% {
         transform: translate3d(-1px, 0, 0);
+        height: 32px;
     }
     20%,80% {
         transform: translate3d(2px, 0, 0);
     }
     30%,50%,70% {
         transform: translate3d(-4px, 0, 0);
+        height: 50px;
     }
     40%,60% {
         transform: translate3d(4px, 0, 0);
+        height: 32px;
     }
 }
 
@@ -172,7 +125,8 @@ td>input {
     display: flex;
     position: relative;
     padding-top: 1em;
-    background: linear-gradient(black, #555, #aaa);
+    user-select: none;
+    background-color: antiquewhite;
 }
 
 .tab_bar::after {
