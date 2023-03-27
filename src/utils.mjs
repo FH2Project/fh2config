@@ -9,13 +9,16 @@ function setSelected(e){
         return;
     if (lasttab) {
         lasttab.classList.remove("selected");
-        let doml = document.querySelector("table:not(.hide),canvas:not(.hide)");
-        if (doml)
-            doml.classList.add("hide");
+        let oldContent = document.querySelector(".tab-content.show");
+        if (oldContent)
+            oldContent.classList.remove("show");
     }
     e.target.classList.add("selected");
-    // if (e.target.dataset.tbl)
-    //     addTable(tblDefs[e.target.dataset.tbl]);
+    let selector = `.tab-content.${e.target.textContent.toLowerCase()}`;
+    let activeElement = document.querySelector(selector);
+    if (activeElement)
+        activeElement.classList.add("show");
+    // e.target.parentElement.dataset.active = e.target.textContent.toLowerCase();
 }
 export function tabs(){
     let tb = Array.from(document.querySelectorAll(".tab_bar>span"));

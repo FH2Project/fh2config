@@ -12,15 +12,18 @@
 
 <body>
     <heading>
-        <span>OSCelot</span>
-        <span class="midi"></span><small id="transport">⏵</small>
+        <span>Thylacine</span>
+        <span class="midi"></span><small id="transport" data-tempo="‒‒‒">⏵</small>
     </heading>
     <div class="tab_bar">
-        <span data-tbl="global_table">About</span>
-        <span data-tbl="mcv_table">Events</span>
+        <span>Sequencer</span>
+        <span>About</span>
+        <span>Events</span>
         <span>Connections</span>
         <span class="selected">Gallery</span>
     </div>
+    <div class="tab-content sequencer">........</div>
+    <div class="tab-content gallery">jjjjjjjjj</div>
         <script type="module">
             import {tabs, tblDefs, setTblDef} from './src/utils.mjs';
             import {scopeInit} from './src/cvGen.mjs';
