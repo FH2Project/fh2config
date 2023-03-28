@@ -25,16 +25,29 @@ function defaultEventProcessor(event){
     switch (cmd>>4) {
         case 0xF: // clock event
             if (Options.transport_element){
-                Options.pcnt++;
-                if (Options.pcnt>=Options.ppq){
-                    Options.pcnt = 0;
-                    if (lastPulseTime) {
-                        deltaPulseTime = event.timeStamp - lastPulseTime;
-                        Options.transport_element.dataset.tempo = Math.round(60/(deltaPulseTime/1000));
+                switch (cmd) {
+                case 0xF8: //midi clock
+                    Options.pcnt++;
+                    if (Options.pcnt>=Options.ppq){
+                        Options.pcnt = 0;
+                        if (lastPulseTime) {
+                            deltaPulseTime = event.timeStamp - lastPulseTime;
+                            Options.transport_element.dataset.tempo = Math.round(60/(deltaPulseTime/1000));
+                        }
+                        lastPulseTime = event.timeStamp;
                     }
-                    lastPulseTime = event.timeStamp;
-                    }
+                    break;
+                case 0xFA: // start
+                    Options.transport_element.dataset.playing = true;
+                    break;
+                case 0xFB: // continue
+                    Options.transport_element.dataset.playing = true;
+                    break;
+                case 0xFC: // stop
+                    Options.transport_element.dataset.playing = false;
+                    break;
                 }
+            }
             break;
         case 9: // note on
             console.log(`${event.data[0].toString(16)} ${event.data[1]} ${event.data[2]}`);

@@ -28,6 +28,12 @@ heading {
 #transport[data-tempo]::after {
     content: " "attr(data-tempo)"BPM";
 }
+#transport::before {
+    content: "⏵";
+}
+#transport[data-playing="true"]::before {
+    content: "⏸" ;
+}
 
 .midi {
     display: inline-block;
@@ -157,4 +163,12 @@ heading {
 }
 .tab-content.show {
     display: block;
+}
+
+/* other ui */
+.knob {
+    display: inline-block;
+    height:9em;
+    width:9em;
+    background-image: radial-gradient(currentColor 49%, transparent 50%);
 }
