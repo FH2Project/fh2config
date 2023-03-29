@@ -14,11 +14,22 @@ function clickKnob(e){
 }
 function scrollKnob(e){
     e.preventDefault();
+    let deltaT, excelerate = 1;
+    if (this.dataset.prevTimeStamp)
+    {
+        deltaT = e.timeStamp - this.dataset.prevTimeStamp;
+        if (deltaT<90)
+            excelerate = 8;
+        else if (deltaT<180)
+            excelerate = 3;
+    }
     let v = this.dataset.value>>0;
-    v += e.deltaY * -0.01;
+    let normalisedDelta = (e.deltaY>0?1:-1)*excelerate;
+    v += normalisedDelta;
     v = Math.max(0, v);
     v = Math.min(127, v);
     this.dataset.value = v;
+    this.dataset.prevTimeStamp = e.timeStamp;
 }
 document.addEventListener("DOMContentLoaded", function(){
     let dups = this.querySelectorAll("[data-duplicate]");

@@ -172,7 +172,8 @@ heading {
     user-select: none;
     display: inline-flex;
     height:calc(96vw / 8);
-    width:calc(96vw / 8);
+    /* width: clamp(64px, 96vw / 8, 128px); */
+    aspect-ratio: 1 / 1;
     background-image: radial-gradient(#dee 47%, grey 49%, transparent 50%);
 }
 .knob.note {
@@ -186,7 +187,7 @@ heading {
 }
 .knob::before {
     content: attr(aria-description);
-    font-size: 2.5vw;
+    font-size: clamp( 0.7em, 2.5vw, 1.5em);
     position: absolute;
     text-align: center;
     width: 100%;
