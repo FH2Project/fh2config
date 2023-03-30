@@ -18,13 +18,13 @@ function scrollKnob(e){
     if (this.dataset.prevTimeStamp)
     {
         deltaT = e.timeStamp - this.dataset.prevTimeStamp;
-        if (deltaT<90)
+        if (deltaT<60)
             excelerate = 8;
         else if (deltaT<180)
             excelerate = 3;
     }
     let v = this.dataset.value>>0;
-    let normalisedDelta = (e.deltaY>0?1:-1)*excelerate;
+    let normalisedDelta = (e.wheelDeltaY>0?1:-1)*excelerate;
     v += normalisedDelta;
     v = Math.max(0, v);
     v = Math.min(127, v);

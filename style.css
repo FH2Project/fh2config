@@ -194,3 +194,21 @@ heading {
     display: inline-block;
     margin-top:4.5vw;
 }
+i {
+    font-size: 1.5em;
+    font-style: normal;
+    margin-left: 1em;
+    display:inline-block;
+    border-radius: 50%;
+    min-width: 1em;
+    text-align: center;
+    padding-inline: 4px;
+}
+
+i:hover {
+    background-color: darkgray;
+}
+
+i::after {
+    content: '\FE0E';
+}
